@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 //add new item to json file
-app.post("/items", addItem)
+app.post("/items", cookieAuth, addItem)
 
 function addItem(request, response) {
     // Converting Javascript object (Task Item) to a JSON string
@@ -56,29 +56,29 @@ function addItem(request, response) {
     response.send(200);
 }
 
-app.get("/items", getItems)
+app.get("/items", cookieAuth, getItems)
 //** week5, get all items from the json database*/
   function getItems (request, response) {
     var data = fs.readFileSync('database.json');
     
     //uncomment to see the data being returned 
-    //console.log(JSON.parse(data));
+    console.log(JSON.parse(data));
 
     response.json(JSON.parse(data));
 }
 
-app.get("/items/search", searchItems)
+app.get("/items/search", cookieAuth, searchItems)
 //**week 5, search items service */
   function searchItems (request, response) {
     var searchField = request.query.taskname;
     //uncomment to see the searchField passed in
-    //console.log(searchField);
+    console.log(searchField);
 
     var json = JSON.parse(fs.readFileSync("database.json"));
     var returnData = json.filter((jsondata) => jsondata.Task.includes(searchField));
 
     //uncomment to see the todolists found in the backend service//
-    //console.log(returnData);
+    console.log(returnData);
     response.json(returnData);
 }
 
